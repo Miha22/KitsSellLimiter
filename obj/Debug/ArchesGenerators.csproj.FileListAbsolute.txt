@@ -1,0 +1,16 @@
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/Assembly-CSharp-firstpass.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/Assembly-CSharp.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/Newtonsoft.Json.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/Rocket.API.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/Rocket.Core.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/Rocket.Unturned.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/UnityEngine.CoreModule.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/UnityEngine.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/UnityEngine.Physics2DModule.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/UnityEngine.PhysicsModule.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/obj/Debug/ArchesGenerators.csprojAssemblyReference.cache
+/Users/Test/Documents/GitHub/ArchesGenerators/obj/Debug/ArchesGenerators.csproj.CopyComplete
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/ArchesGeneratorsV4.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/bin/Debug/ArchesGeneratorsV4.pdb
+/Users/Test/Documents/GitHub/ArchesGenerators/obj/Debug/ArchesGeneratorsV4.dll
+/Users/Test/Documents/GitHub/ArchesGenerators/obj/Debug/ArchesGeneratorsV4.pdb
