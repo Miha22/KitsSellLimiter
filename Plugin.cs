@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using fr34kyn01535.Uconomy;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Schema;
+using Newtonsoft.Json.Linq;
 using Rocket.Core.Plugins;
 using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
+using Logger = Rocket.Core.Logging.Logger;
 
 namespace KitsLimiter
 {
     public class Plugin : RocketPlugin<MyConfig>
     {
         internal static Plugin Instance;
-        internal static JsonSchema Schema;
-        internal Uconomy Uconomy;
-        static readonly string kitPath = $@"Plugins\{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}\Kits";
+        internal DatabaseManager Database;
+        internal static readonly string kitPath = $@"Plugins\{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}\Kits";
 
         static Plugin()
         {
@@ -24,10 +24,10 @@ namespace KitsLimiter
             Dictionary<ushort, ushort> items = new Dictionary<ushort, ushort>
             {
                 { 363, 1 },
-                { 6, 5 },
+                { 6, 10 },
                 { 253, 1 },
-                { 81, 3 },
-                { 15, 2 },
+                { 81, 6 },
+                { 15, 4 },
                 { 1010, 1 },
                 { 1011, 1 },
                 { 1012, 1 },
@@ -39,14 +39,12 @@ namespace KitsLimiter
             sw.WriteLine(json);
             sw.Close();
             sw.Dispose();
-            using TextReader reader = File.OpenText(@"c:\schema\Person.json");
-            Schema = JsonSchema.Read(new JsonTextReader(reader));
         }
 
         protected override void Load()
         {
             Instance = this;
-            Uconomy = new Uconomy();
+            Database = new DatabaseManager();
             if (!System.IO.Directory.Exists(kitPath))
                 System.IO.Directory.CreateDirectory(kitPath);
             DirectoryInfo directory = new DirectoryInfo(kitPath);
@@ -81,10 +79,49 @@ namespace KitsLimiter
             return true;
         }
 
-        internal bool LoadKitToDB(string kit)
+        internal string TryLoadKit(string json, string kitname)
         {
-
+            string nonAdded = "";
+            Kit kit = null;
+            try
+            {
+                JObject test = JObject.Parse(json);
+                kit = JsonConvert.DeserializeObject<Kit>(json);
+            }
+            catch (Exception)
+            {
+                Logger.LogError($"Invalid JSON in kit: {kitname}");
+            }
+            string content = "";
+            if (kit.Money != 0)
+                content += $"c.{kit.Money} ";
+            if (kit.Items != null && kit.Items.Count == 0)
+            {
+                foreach (KeyValuePair<ushort, ushort> pair in kit.Items)
+                {
+                    if (Assets.find(EAssetType.ITEM, pair.Key) == null || pair.Value == 0)
+                    {
+                        nonAdded += $"{pair.Key} ";
+                        continue;
+                    }
+                    if (pair.Value == 1)
+                    {
+                        content += $"{pair.Key} ";
+                        continue;
+                    }
+                    content += $"{pair.Key}/{pair.Value} ";
+                }
+                content = content.TrimEnd();
+                Database.LoadKit(kit.Name, content, kit.Category, kit.Priority, kit.CoolDown, kit.Cost);
+            }
+            return nonAdded;
         }
+        //IEnumerable<Item> items =
+        //                    from page in ((UnturnedPlayer)caller).Player.inventory.items
+        //                    from itemJar in page.items
+        //                    where page != null || page.items.Count != 0
+        //                    where itemJar.item is MItem
+        //                    select itemJar.item;
 
         //private void Events_OnPlayerConnected(UnturnedPlayer player)
         //{
@@ -102,19 +139,20 @@ namespace KitsLimiter
         //    }
         //}
 
-        internal bool GetKit(UnturnedPlayer player, string kitname, string content)
+        internal bool GiveKit(UnturnedPlayer player, string kitname, string content, decimal price)
         {
             string[] items = content.Trim().Split(' ');
             if (items == null || items.Length == 0)
                 return false;
             decimal money = 0;
+            Uconomy.Instance.Database.IncreaseBalance(player.CSteamID.ToString(), -price);
             foreach (string item in items)
             {
                 ushort count = 1;
                 ushort id = 0;
 
                 if (item.Substring(0, 1) == "c")
-                    money += Uconomy.Database.IncreaseBalance(player.CSteamID.ToString(), decimal.Parse(item.Substring(2)));
+                    money += Uconomy.Instance.Database.IncreaseBalance(player.CSteamID.ToString(), decimal.Parse(item.Substring(2)));
                 else if (!ushort.TryParse(item, out id))
                 {
                     string[] c = item.Split('/');
@@ -122,18 +160,14 @@ namespace KitsLimiter
                     count = ushort.Parse(c[1]);
                 }
                 Item kit = new Item(id, EItemOrigin.ADMIN);
-                kit.state[12] = 22;
+                if (kit.state.Length == 18 && kit.state[12] == 1)
+                    kit.state[12] = 22;
                 for (ushort i = 0; i < count; i++)
                     player.Player.inventory.forceAddItemAuto(kit, true, true, true);
             }
-            UnturnedChat.Say(player, $"You have received kit: {kitname}" + (money == 0 ? "!" : $" with {money} money!"), true);
+            UnturnedChat.Say(player, $"You have received kit: {kitname}" + (money == 0 ? "!" : $" with {money}{Uconomy.Instance.Configuration.Instance.MoneySymbol}"), true);
 
             return true;
-        }
-
-        internal bool GetContent(Kit kit)
-        {
-
         }
 
         protected override void Unload()
