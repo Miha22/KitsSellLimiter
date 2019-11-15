@@ -58,7 +58,7 @@ namespace KitsLimiter
             //player.inventory.forceAddItem(new MItem(id), true);
             ItemAsset itemAsset = (ItemAsset)Assets.find(EAssetType.ITEM, id);
             Item item = new Item(id, EItemOrigin.ADMIN);
-            if (itemAsset == null || item.state.Length < 16 || itemAsset.isPro)
+            if (itemAsset == null || item.state.Length != 18 || itemAsset.isPro)
                 return false;
 
 
@@ -112,7 +112,7 @@ namespace KitsLimiter
                     content += $"{pair.Key}/{pair.Value} ";
                 }
                 content = content.TrimEnd();
-                Database.LoadKit(kit.Name, content, kit.Category, kit.Priority, kit.CoolDown, kit.Cost);
+                Database.LoadKit(kit.Name, content, kit.Category, kit.Priority, 0, kit.Cost);
             }
             return nonAdded;
         }

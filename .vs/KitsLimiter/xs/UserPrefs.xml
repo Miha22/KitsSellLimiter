@@ -1,19 +1,22 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workbench ActiveDocument="Plugin.cs">
     <Files>
-      <File FileName="Plugin.cs" Line="38" Column="13" />
-      <File FileName="DataBaseManager.cs" Line="64" Column="25" />
-      <File FileName="CommandCheckMarked.cs" Line="1" Column="1" />
-      <File FileName="CommandAddMarkedItem.cs" Line="9" Column="1" />
-      <File FileName="CommandLoadKit.cs" Line="8" Column="1" />
+      <File FileName="Plugin.cs" Line="104" Column="52" />
+      <File FileName="DataBaseManager.cs" />
+      <File FileName="CommandCheckMarked.cs" />
+      <File FileName="CommandAddMarkedItem.cs" />
+      <File FileName="CommandLoadKit.cs" />
       <File FileName="Kit.cs" Line="1" Column="1" />
-      <File FileName="CommandKit.cs" Line="10" Column="1" />
+      <File FileName="CommandKit.cs" />
+      <File FileName="CommandKits.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="KitsLimiter" expanded="True">
-            <Node name="KitsLimiter" expanded="True" selected="True" />
+            <Node name="KitsLimiter" expanded="True">
+              <Node name="Plugin.cs" selected="True" />
+            </Node>
           </Node>
         </State>
       </Pad>
