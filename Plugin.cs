@@ -18,29 +18,6 @@ namespace KitsLimiter
         internal DatabaseManager Database;
         internal static readonly string kitPath = $@"Plugins\{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}\Kits";
 
-        static Plugin()
-        {
-            //FileStream file = new FileInfo(kitPath + @"/Example.json").Open(FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-            //Dictionary<ushort, ushort> items = new Dictionary<ushort, ushort>
-            //{
-            //    { 363, 1 },
-            //    { 6, 10 },
-            //    { 253, 1 },
-            //    { 81, 6 },
-            //    { 15, 4 },
-            //    { 1010, 1 },
-            //    { 1011, 1 },
-            //    { 1012, 1 },
-            //    { 1013, 1 }
-            //};
-            //Kit kit = new Kit { Name = "KitStart", Category = null, Priority = 0, Cost = 25.0f, CoolDown = 300, Money = 100, Items = items };
-            //string json = JsonConvert.SerializeObject(kit, Formatting.Indented);
-            //using StreamWriter sw = new StreamWriter(file);
-            //sw.WriteLine(json);
-            //sw.Close();
-            //sw.Dispose();
-        }
-
         protected override void Load()
         {
             Instance = this;
@@ -69,6 +46,7 @@ namespace KitsLimiter
             sw.WriteLine(json);
             sw.Close();
             sw.Dispose();
+            CommandLoadKit.Instance.Execute(null, "all");
         }
 
         internal bool GiveMarkedGun(Player player, ushort id)
@@ -105,12 +83,17 @@ namespace KitsLimiter
             {
                 JObject check = JObject.Parse(json);
                 kit = JsonConvert.DeserializeObject<Kit>(json);
+                if(kit == null)
+                {
+                    Logger.LogError($"Allien JSON in file: {kitname}, remove it from folder!");
+                    return nonAdded;
+                }
                 //Console.WriteLine($"kit null?: {kit == null}");
             }
             catch (Exception)
             {
                 Logger.LogError($"Invalid JSON in file: {kitname}");
-                return null;
+                return nonAdded;
             }
             string content = "";
             if (kit.Money != 0)
@@ -134,8 +117,8 @@ namespace KitsLimiter
                 content = content.TrimEnd();
                 Database.LoadKit(kit.Name, content, kit.Category, kit.Priority, 0, kit.Cost);
             }
-            else
-                Console.WriteLine($"ur gay: {kit.Items == null} {kit.Items.Count}");
+            //else
+            //    Console.WriteLine($"ur gay: {kit.Items == null} {kit.Items.Count}");
             return nonAdded;
         }
         //IEnumerable<Item> items =

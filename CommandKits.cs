@@ -35,7 +35,7 @@ namespace KitsLimiter
                 if (!Plugin.Instance.Database.SelectKitNames(out string results))
                     UnturnedChat.Say(caller, $"No kits in database", UnityEngine.Color.red);
                 else
-                    UnturnedChat.Say(caller, $"Available kits: {results.TrimEnd()}", true);
+                    UnturnedChat.Say(caller, $"Available kits: {results}", true);
                 return;
             }
             if (permissions == null || permissions.Count == 0)

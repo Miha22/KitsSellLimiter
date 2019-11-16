@@ -74,8 +74,9 @@ namespace KitsLimiter
                 {
                     while (reader.Read())
                     {
-                        kits += $"kit.{reader.GetString(0)} ";
+                        kits += $"kit.{reader.GetString(0).Trim()} ";
                     }
+                    kits = kits.TrimEnd();
                     reader.Close();
                     connection.Close();
                     return true;

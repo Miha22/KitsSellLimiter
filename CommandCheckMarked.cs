@@ -12,13 +12,13 @@ namespace KitsLimiter
     {
         public AllowedCaller AllowedCaller => AllowedCaller.Player;
 
-        public string Name => "checkm";
+        public string Name => "checkmarked";
 
         public string Help => "Checks your inventory for marked items";
 
         public string Syntax => "/checkm";
 
-        public List<string> Aliases => new List<string> { "chm" };
+        public List<string> Aliases => new List<string> { "checkm" };
 
         public List<string> Permissions => new List<string> { "kitslimiter.checkmarked" };
 

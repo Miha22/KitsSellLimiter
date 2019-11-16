@@ -19,7 +19,14 @@ namespace KitsLimiter
 
         public List<string> Permissions => new List<string> { "kitslimiter.loadkit" };
 
-        public void Execute(IRocketPlayer caller, string[] command)
+        internal static CommandLoadKit Instance;
+
+        public CommandLoadKit()
+        {
+            Instance = this;
+        }
+
+        public void Execute(IRocketPlayer caller, params string[] command)
         {
             if (command.Length != 1 || new DirectoryInfo(Plugin.kitPath).GetFiles().Length == 0)
             {
@@ -27,6 +34,19 @@ namespace KitsLimiter
                 return;
             }
             FileInfo[] files = new DirectoryInfo(Plugin.kitPath).GetFiles();
+            //foreach (FileInfo file in new DirectoryInfo(path).GetFiles())
+            //{
+            //    if (file.Name == "Config.json")
+            //        continue;
+            //    using (StreamReader sr = file.OpenText())
+            //    {
+            //        //System.Console.WriteLine($"IN USING: {sr.ReadToEnd()}");
+            //        string notFound = TryLoadKit(sr.ReadToEnd(), file.Name);
+            //        if (!string.IsNullOrEmpty(notFound))
+            //            Console.WriteLine($"[NOT FOUND IDS]: {notFound} in {file.Name} KIT\nKit was loaded in DataBase");
+            //        sr.Close();
+            //    }
+            //}
             if (command[0].ToLower() == "all")
             {
                 foreach (FileInfo file in files)
@@ -37,9 +57,10 @@ namespace KitsLimiter
                         string notFound = Plugin.Instance.TryLoadKit(sr.ReadToEnd(), file.Name);
                         if (!string.IsNullOrEmpty(notFound))
                             Logger.LogWarning($"[NOT FOUND IDS]: {notFound} in {file.Name} KIT\nKit was loaded in DataBase");
-                        return;
+                        sr.Close();
                     }
                 }
+                return;
             }
             foreach (FileInfo file in files)
             {

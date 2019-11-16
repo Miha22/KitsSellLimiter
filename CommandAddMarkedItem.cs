@@ -18,7 +18,7 @@ namespace KitsLimiter
 
         public List<string> Aliases => new List<string> { "givem" };
 
-        public List<string> Permissions => new List<string> { "kitslimiter.givemarked" };
+        public List<string> Permissions => new List<string> { "kitslimiter.givemarkeditem" };
 
         public void Execute(IRocketPlayer caller, string[] command)
         {
