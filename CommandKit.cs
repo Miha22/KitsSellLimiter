@@ -28,17 +28,22 @@ namespace KitsLimiter
                 UnturnedChat.Say(caller, $"Incorrect command syntax. Correct usage: {Syntax}", UnityEngine.Color.red);
                 return;
             }
-            string content = Plugin.Instance.Database.GetKitContent(command[0].Trim(), out string fullkitname, out decimal kitprice);
+            Plugin.Instance.Database.GetKitContent(command[0].Trim(), out string fullkitname, out decimal kitprice, out string content);
             if(content == null)
             {
                 UnturnedChat.Say(caller, $"Kit: {command[0]} was not found!", UnityEngine.Color.red);
                 return;
             }
-            if(!R.Permissions.HasPermission(caller, $"kitslimiter.kit.{fullkitname.ToLower()}"))
+            if(!R.Permissions.HasPermission(caller, $"kitslimiter.kit.{fullkitname}"))
             {
+                foreach (var item in R.Permissions.GetPermissions(caller))
+                {
+                    System.Console.WriteLine(item.Name);
+                }
                 UnturnedChat.Say(caller, $"You dont have permission to execute this kit!", UnityEngine.Color.red);
                 return;
             }
+            System.Console.WriteLine("before uconomy");
             decimal playerB = Uconomy.Instance.Database.GetBalance(((UnturnedPlayer)caller).CSteamID.ToString());
             if (playerB < kitprice)
             {

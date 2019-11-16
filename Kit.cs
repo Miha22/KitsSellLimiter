@@ -7,9 +7,10 @@ namespace KitsLimiter
         public string Name;
         public string Category;
         public int Priority;
-        public float Cost;
+        public decimal Cost;
         public int CoolDown;
         public Dictionary<ushort, ushort> Items;
         public int Money;
     }
+
 }

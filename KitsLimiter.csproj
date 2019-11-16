@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{507355EC-B538-49BE-B06E-583F2D4A74BC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>ArchesGenerators</RootNamespace>
+    <RootNamespace>KitsLimiter</RootNamespace>
     <AssemblyName>KitsLimiter</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
   </PropertyGroup>
@@ -18,7 +18,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -26,7 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -39,6 +39,9 @@
     <Compile Include="CommandLoadKit.cs" />
     <Compile Include="CommandKit.cs" />
     <Compile Include="CommandKits.cs" />
+    <Compile Include="CommandShutdown.cs" />
+    <Compile Include="CommandDeleteKit.cs" />
+    <Compile Include="CommandDownLoadKit.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
@@ -101,9 +104,15 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json.Schema">
-      <HintPath>lib\Newtonsoft.Json.Schema.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Libraries\System.Management.dll" />
+    <None Include="Libraries\I18N.dll" />
+    <None Include="Libraries\I18N.West.dll" />
+    <None Include="Libraries\System.Transactions.dll" />
+    <None Include="Libraries\System.Data.dll" />
+    <None Include="Libraries\Uconomy.dll" />
+    <None Include="Libraries\MySql.Data.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,7 +7,7 @@ namespace KitsLimiter
 {
     public class CommandLoadKit : IRocketCommand
     {
-        public AllowedCaller AllowedCaller => AllowedCaller.Console;
+        public AllowedCaller AllowedCaller => AllowedCaller.Both;
 
         public string Name => "loadkit";
 
@@ -31,26 +31,36 @@ namespace KitsLimiter
             {
                 foreach (FileInfo file in files)
                 {
-                    using StreamReader sr = file.OpenText();
-                    string notFound = Plugin.Instance.TryLoadKit(sr.ReadToEnd(), file.Name);
-                    if (notFound != "")
-                        Logger.LogWarning($"[NOT FOUND IDS]: {notFound} in {file.Name} KIT");
+                    using (StreamReader sr = file.OpenText())
+                    {
+                        //System.Console.WriteLine($"IN USING: {sr.ReadToEnd()}");
+                        string notFound = Plugin.Instance.TryLoadKit(sr.ReadToEnd(), file.Name);
+                        if (!string.IsNullOrEmpty(notFound))
+                            Logger.LogWarning($"[NOT FOUND IDS]: {notFound} in {file.Name} KIT\nKit was loaded in DataBase");
+                        return;
+                    }
                 }
             }
             foreach (FileInfo file in files)
             {
-                if(file.Name.ToLower() == command[0].Trim().ToLower())
+                //System.Console.WriteLine(file.Name.Split('.')[0].ToLower());
+                //System.Console.WriteLine(command[0].Trim().ToLower());
+                if(file.Name.Split('.')[0].ToLower() == command[0].Trim().ToLower())
                 {
-                    using StreamReader sr = file.OpenText();
-                    string notFound = Plugin.Instance.TryLoadKit(sr.ReadToEnd(), file.Name);
-                    if (notFound != "")
-                        Logger.LogWarning($"[NOT FOUND IDS]: {notFound} in {file.Name} KIT");
-                    return;
+                    using (StreamReader sr = file.OpenText())
+                    {
+                        //System.Console.WriteLine($"IN USING: {sr.ReadToEnd()}");
+                        string notFound = Plugin.Instance.TryLoadKit(sr.ReadToEnd(), file.Name);
+                        //System.Console.WriteLine(sr.ReadToEnd());
+                        if (!string.IsNullOrEmpty(notFound))
+                            Logger.LogWarning($"[NOT FOUND IDS]: {notFound.TrimEnd()} in {file.Name} KIT\nKit was loaded in DataBase");
+                        return;
+                    }
                 }
             }
             string names = "";
             foreach (var file in files)
-                names += $"{file.Name} ";
+                names += $"{file.Name.Split('.')[0]} ";
 
             Logger.LogError($"Kit {command[0].Trim()} was not found!, available kits: {names.TrimEnd()}");
             //Console.WriteLine("Added marked item");

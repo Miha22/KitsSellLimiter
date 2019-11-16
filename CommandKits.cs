@@ -28,6 +28,16 @@ namespace KitsLimiter
                 return;
             }
             List<Permission> permissions = R.Permissions.GetPermissions(caller);
+            //caller.IsAdmin || caller.HasPermission("kitslimiter.kit.*")
+            if (caller.IsAdmin || caller.HasPermission("kitslimiter.kit.*"))
+            {
+                //System.Console.WriteLine("maaY");
+                if (!Plugin.Instance.Database.SelectKitNames(out string results))
+                    UnturnedChat.Say(caller, $"No kits in database", UnityEngine.Color.red);
+                else
+                    UnturnedChat.Say(caller, $"Available kits: {results.TrimEnd()}", true);
+                return;
+            }
             if (permissions == null || permissions.Count == 0)
             {
                 UnturnedChat.Say(caller, $"You are not in any of group!", UnityEngine.Color.red);

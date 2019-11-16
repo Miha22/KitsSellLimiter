@@ -17,7 +17,6 @@
 /Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/I18N.dll
 /Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/I18N.West.dll
 /Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/MySql.Data.dll
-/Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/Newtonsoft.Json.Schema.dll
 /Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/System.Data.dll
 /Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/System.Management.dll
 /Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/System.Transactions.dll

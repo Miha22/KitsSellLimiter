@@ -7,6 +7,7 @@ using SDG.Unturned;
 
 namespace KitsLimiter
 {
+
     public class CommandCheckMarked : IRocketCommand
     {
         public AllowedCaller AllowedCaller => AllowedCaller.Player;

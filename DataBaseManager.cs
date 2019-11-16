@@ -61,55 +61,116 @@ namespace KitsLimiter
             }
         }
 
-        internal string GetKitContent(string kitname, out string fullkitname, out decimal kitprice)
+        internal bool SelectKitNames(out string kits)
+        {
+            kits = "";
+            using (MySqlConnection connection = CreateConnection())
+            {
+                MySqlCommand command = connection.CreateCommand();
+                command.CommandText = "SELECT `Name` FROM `" + Plugin.Instance.Configuration.Instance.DatabaseTableName + "`;";
+                connection.Open();
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader != null && reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        kits += $"kit.{reader.GetString(0)} ";
+                    }
+                    reader.Close();
+                    connection.Close();
+                    return true;
+                }
+                connection.Close();
+            }
+            kits = null;
+            return false;
+        }
+
+        internal void GetKitContent(string kitname, out string fullkitname, out decimal kitprice, out string content)
         {
             //Dictionary<ushort, ushort> kit = new Dictionary<ushort, ushort>();
-            try
+            kitname = Regex.Replace(kitname, @"\p{Cs}", "");
+            
+            using (MySqlConnection connection = CreateConnection())
             {
-                MySqlConnection connection = CreateConnection();
                 MySqlCommand command = connection.CreateCommand();
-                command.CommandText = "SELECT `Name`,`Content`,`Cost` FROM `" + Plugin.Instance.Configuration.Instance.DatabaseTableName + "` WHERE (`Name` like '" + kitname + "');";
+                command.Parameters.AddWithValue("@kit", kitname);
+                command.CommandText = "SELECT `Name`,`Content`,`Cost` FROM `" + Plugin.Instance.Configuration.Instance.DatabaseTableName + "` WHERE (`Name` like @kit);";
                 connection.Open();
                 MySqlDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.SingleRow);
                 if (reader != null && reader.HasRows)
                 {
                     reader.Read();
-                    connection.Close();
-                    connection.Dispose();
                     fullkitname = (string)reader["Name"];
                     kitprice = (decimal)reader["Cost"];
-                    return (string)reader["Content"];
+                    content = (string)reader["Content"];
+                    //Console.WriteLine(22);
+                    reader.Close();
+                    connection.Close();
+
+                    return;
                 }
+                reader.Close();
                 connection.Close();
-                connection.Dispose();
             }
-            catch (Exception ex)
-            {
-                Logger.LogException(ex, ex.Message);
-            }
+            
             kitprice = -1;
             fullkitname = null;
-            return null;
+            content = null;
+            return;
         }
 
-        internal void LoadKit(string kitname, string content, string category = null, int priority = 0, int cd = 0, float cost = 0f)
+        internal bool DeleteKit(string kitname)
+        {
+            using (MySqlConnection connection = CreateConnection())
+            {
+
+                MySqlCommand command = connection.CreateCommand();
+                command.Parameters.AddWithValue("@name", "%" + kitname + "%");
+                command.CommandText = "select * from `" + Plugin.Instance.Configuration.Instance.DatabaseTableName + "` where (`Name` like @name);";
+                connection.Open();
+                object reader = command.ExecuteScalar();
+                if (reader != null)
+                {
+                    //ulong steamId = reader.GetUInt64(0);
+                    connection.Close();
+                    command = connection.CreateCommand();
+                    command.Parameters.AddWithValue("@name", kitname);
+                    command.CommandText = "delete from `" + Plugin.Instance.Configuration.Instance.DatabaseTableName + "` where (`Name` like @name);";
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+                }
+                connection.Close();
+            }
+            return false;
+        }
+
+        internal void LoadKit(string kitname, string content, string category = null, int priority = 0, int cd = 0, decimal cost = 0m)
         {
             using (MySqlConnection connection = CreateConnection())
             {
                 MySqlCommand command = connection.CreateCommand();
-                command.CommandText = "select * from `" + Plugin.Instance.Configuration.Instance.DatabaseTableName + "` WHERE (`Name` like '" + kitname + "');";
+                kitname = Regex.Replace(kitname, @"\p{Cs}", "");
+                command.Parameters.AddWithValue("@kit", kitname);
+                command.CommandText = "select `Name`,`Category`,`Content`,`Priority`,`Cost`,`Cooldown` from `" + Plugin.Instance.Configuration.Instance.DatabaseTableName + "` WHERE (`Name` like @kit);";
                 connection.Open();
                 MySqlDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.SingleRow);
                 if (reader == null || !reader.HasRows)
+                {
                     InsertInTable(kitname, content, category, priority, cd, cost);
+                    //Console.WriteLine("inserting row");
+                }   
                 else
                 {
+                    //Console.WriteLine("updating row");
                     reader.Read();
                     if ((string)reader["Content"] != content)
                         UpdateRow((string)reader["Name"], "Content", content);
                     if (reader["Category"] != (category == null ? DBNull.Value : (object)category))
                         UpdateRow((string)reader["Name"], "Category", category);
-                    if (Math.Abs((float)reader["Cost"] - cost) > 0.0f)
+                    if (Math.Abs((decimal)reader["Cost"] - cost) > 0.0m)
                         UpdateRow((string)reader["Name"], "Cost", cost);
                     if ((int)reader["Priority"] != priority)
                         UpdateRow((string)reader["Name"], "Priority", priority);
@@ -119,12 +180,11 @@ namespace KitsLimiter
                     //Console.WriteLine(reader["banTime"] == DBNull.Value);
                 }
                 reader.Close();
-                reader.Dispose();
                 connection.Close();
             }
         }
 
-        internal void InsertInTable(string kitname, string content, string category = null, int priority = 0, int cooldown = 0, float cost = 0f)
+        internal void InsertInTable(string kitname, string content, string category = null, int priority = 0, int cooldown = 0, decimal cost = 0m)
         {
             try
             {
@@ -146,6 +206,8 @@ namespace KitsLimiter
                 Logger.LogException(ex);
             }
         }
+
+
 
         //public bool IsBanned(UnturnedPlayer player, out DateTime date)
         //{
@@ -346,7 +408,7 @@ namespace KitsLimiter
         //    }
         //    return result == null;
         //}
-        public bool UpdateRow(string target, string column, object value)
+        public bool UpdateRow(string name, string column, object value)
         {
             object result = null;
             try
@@ -355,7 +417,7 @@ namespace KitsLimiter
                 {
                     MySqlCommand command = connection.CreateCommand();
                     command.Parameters.AddWithValue("@value", value);
-                    command.CommandText = "UPDATE `" + Plugin.Instance.Configuration.Instance.DatabaseTableName + "` SET `" + column + "` = @value WHERE `" + target + "` = '" + target + "';";
+                    command.CommandText = "UPDATE `" + Plugin.Instance.Configuration.Instance.DatabaseTableName + "` SET `" + column + "` = @value WHERE (`Name` = '" + name + "');";
                     connection.Open();
                     command.ExecuteNonQuery();
                     connection.Close();

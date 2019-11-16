@@ -1,21 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Plugin.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CommandDownLoadKit.cs">
     <Files>
-      <File FileName="Plugin.cs" Line="104" Column="52" />
-      <File FileName="DataBaseManager.cs" />
+      <File FileName="Plugin.cs" Line="164" Column="23" />
+      <File FileName="DataBaseManager.cs" Line="64" Column="51" />
       <File FileName="CommandCheckMarked.cs" />
-      <File FileName="CommandAddMarkedItem.cs" />
-      <File FileName="CommandLoadKit.cs" />
-      <File FileName="Kit.cs" Line="1" Column="1" />
-      <File FileName="CommandKit.cs" />
-      <File FileName="CommandKits.cs" Line="1" Column="1" />
+      <File FileName="CommandAddMarkedItem.cs" Line="1" Column="1" />
+      <File FileName="CommandLoadKit.cs" Line="65" Column="13" />
+      <File FileName="Kit.cs" Line="5" Column="18" />
+      <File FileName="CommandKit.cs" Line="53" Column="38" />
+      <File FileName="CommandKits.cs" Line="35" Column="17" />
+      <File FileName="../../../../../Library/Frameworks/Mono.framework/Versions/6.4.0/lib/mono/msbuild/Current/bin/Microsoft.Common.CurrentVersion.targets" />
+      <File FileName="PluginConfig.cs" Line="1" Column="1" />
+      <File FileName="CommandShutdown.cs" Line="25" Column="52" />
+      <File FileName="CommandDeleteKit.cs" Line="7" Column="1" />
+      <File FileName="CommandDownLoadKit.cs" Line="68" Column="31" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="KitsLimiter" expanded="True">
             <Node name="KitsLimiter" expanded="True">
-              <Node name="Plugin.cs" selected="True" />
+              <Node name="References" expanded="True" />
+              <Node name="CommandDownLoadKit.cs" selected="True" />
             </Node>
           </Node>
         </State>
