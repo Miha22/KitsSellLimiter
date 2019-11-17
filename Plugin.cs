@@ -142,7 +142,7 @@ namespace KitsLimiter
         //    {
         //        Console.WriteLine($"{num++}. {bite}");
         //    }
-        //} \
+        //} \ 
 
         internal bool GiveKit(UnturnedPlayer player, string kitname, string content, decimal price)
         {

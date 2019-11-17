@@ -107,12 +107,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\System.Management.dll" />
-    <None Include="Libraries\I18N.dll" />
-    <None Include="Libraries\I18N.West.dll" />
-    <None Include="Libraries\System.Transactions.dll" />
-    <None Include="Libraries\System.Data.dll" />
-    <None Include="Libraries\Uconomy.dll" />
-    <None Include="Libraries\MySql.Data.dll" />
+    <None Include="Libraries\I18N.dll">
+      <IncludeInPackage>false</IncludeInPackage>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Libraries\I18N.West.dll">
+      <IncludeInPackage>false</IncludeInPackage>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Libraries\System.Transactions.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Libraries\System.Data.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Libraries\Uconomy.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Libraries\MySql.Data.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

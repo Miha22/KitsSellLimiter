@@ -5,21 +5,22 @@
       <File FileName="DataBaseManager.cs" />
       <File FileName="../Practic/CommandDownLoadKit.cs" />
       <File FileName="CommandKits.cs" />
-      <File FileName="Plugin.cs" Line="121" Column="87" />
+      <File FileName="Plugin.cs" Line="145" Column="15" />
       <File FileName="CommandLoadKit.cs" />
       <File FileName="CommandAddMarkedItem.cs" />
       <File FileName="CommandCheckMarked.cs" />
       <File FileName="CommandDeleteKit.cs" />
       <File FileName="CommandKit.cs" />
-      <File FileName="CommandShutdown.cs" Line="20" Column="64" />
+      <File FileName="CommandShutdown.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="KitsLimiter" expanded="True">
             <Node name="KitsLimiter" expanded="True">
-              <Node name="References" expanded="True" />
-              <Node name="Plugin.cs" selected="True" />
+              <Node name="Libraries" expanded="True">
+                <Node name="Uconomy.dll" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>

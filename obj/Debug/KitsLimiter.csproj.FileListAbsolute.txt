@@ -22,3 +22,9 @@
 /Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/System.Transactions.dll
 /Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/System.ValueTuple.dll
 /Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/Uconomy.dll
+/Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/Libraries/I18N.dll
+/Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/Libraries/I18N.West.dll
+/Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/Libraries/System.Transactions.dll
+/Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/Libraries/System.Data.dll
+/Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/Libraries/Uconomy.dll
+/Users/Test/Documents/GitHub/KitsSellLimiter/bin/Debug/Libraries/MySql.Data.dll
